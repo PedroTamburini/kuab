@@ -1,0 +1,23 @@
+include:
+  - common.yml
+
+services:
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: ollama_amd
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_amd_data:/root/.ollama
+    restart: always
+    devices:
+      - "/dev/kfd"
+      - "/dev/dri"
+    # Optional environment variable for specific AMD architectures
+    # environment:
+    #   - HSA_OVERRIDE_GFX_VERSION=10.3.0
+    networks:
+      - atenai-network
+
+volumes:
+  ollama_amd_data:

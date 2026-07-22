@@ -1,0 +1,17 @@
+include:
+  - common.yml
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_cpu
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_cpu_data:/root/.ollama
+    restart: always
+    networks:
+      - atenai-network
+
+volumes:
+  ollama_cpu_data:

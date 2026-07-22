@@ -1,0 +1,24 @@
+include:
+  - common.yml
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama_nvidia
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_nvidia_data:/root/.ollama
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - atenai-network
+
+volumes:
+  ollama_nvidia_data:
