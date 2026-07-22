@@ -2,25 +2,23 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: atenai_backend
     ports:
       - "8000:8000"
     environment:
       - OLLAMA_URL=http://ollama:11434
     networks:
-      - atenai-network
+      - kuab-network
     restart: always
 
   frontend:
     build:
       context: ./frontend
-    container_name: atenai_frontend
     ports:
       - "5173:5173"
     networks:
-      - atenai-network
+      - kuab-network
     restart: always
 
 networks:
-  atenai-network:
-    name: atenai-network
+  kuab-network:
+    name: kuab-network

@@ -4,7 +4,6 @@ include:
 services:
   ollama:
     image: ollama/ollama:rocm
-    container_name: ollama_amd
     ports:
       - "11434:11434"
     volumes:
@@ -17,7 +16,7 @@ services:
     # environment:
     #   - HSA_OVERRIDE_GFX_VERSION=10.3.0
     networks:
-      - atenai-network
+      - kuab-network
 
 volumes:
   ollama_amd_data:
