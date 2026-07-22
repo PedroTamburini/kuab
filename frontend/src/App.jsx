@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { fetchModels, chatStream } from './services/api';
+import { fetchModels, chatStream, transcribeAudio } from './services/api';
 import './index.css';
 
 function App() {
@@ -9,8 +9,12 @@ function App() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
   
   const messagesEndRef = useRef(null);
+  const mediaRecorderRef = useRef(null);
+  const audioChunksRef = useRef([]);
 
   useEffect(() => {
     loadModels();
@@ -34,6 +38,46 @@ function App() {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorderRef.current = new MediaRecorder(stream);
+      audioChunksRef.current = [];
+
+      mediaRecorderRef.current.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorderRef.current.onstop = async () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        setIsTranscribing(true);
+        try {
+          const transcribedText = await transcribeAudio(audioBlob);
+          setInput((prev) => (prev ? prev + ' ' + transcribedText : transcribedText));
+        } catch (err) {
+          setError("Transcription failed.");
+        } finally {
+          setIsTranscribing(false);
+        }
+      };
+
+      mediaRecorderRef.current.start();
+      setIsRecording(true);
+    } catch (err) {
+      setError("Microphone access denied or not available.");
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+      setIsRecording(false);
+    }
   };
 
   const handleSend = async (e) => {
@@ -115,12 +159,21 @@ function App() {
 
       <footer className="input-area">
         <form onSubmit={handleSend}>
+          <button 
+            type="button" 
+            className={`mic-button ${isRecording ? 'recording' : ''}`}
+            onClick={isRecording ? stopRecording : startRecording}
+            disabled={isTranscribing || isLoading}
+            title="Gravar Áudio"
+          >
+            {isTranscribing ? '⏳' : '🎤'}
+          </button>
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Type your message..."
-            disabled={isLoading || !selectedModel}
+            disabled={isLoading || !selectedModel || isTranscribing}
           />
           <button type="submit" disabled={isLoading || !selectedModel || !input.trim()}>
             {isLoading ? '...' : 'Send'}
