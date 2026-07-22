@@ -80,3 +80,25 @@ export const transcribeAudio = async (audioBlob) => {
         throw error;
     }
 };
+
+export const transcribeYoutube = async (url) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/transcribe-youtube`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ url }),
+        });
+
+        if (!response.ok) {
+            throw new Error('YouTube transcription failed');
+        }
+
+        const data = await response.json();
+        return data.text;
+    } catch (error) {
+        console.error("YouTube transcription error:", error);
+        throw error;
+    }
+};

@@ -50,6 +50,14 @@ async def transcribe_audio(audio: UploadFile = File(...)):
     """Transcribe an uploaded audio file using Whisper."""
     return await transcription_controller.transcribe(audio)
 
+class YoutubeRequest(BaseModel):
+    url: str
+
+@app.post("/api/transcribe-youtube")
+async def transcribe_youtube(request: YoutubeRequest):
+    """Transcribe a YouTube video audio using Whisper."""
+    return await transcription_controller.transcribe_youtube(request.url)
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
