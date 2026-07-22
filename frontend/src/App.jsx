@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { fetchModels, chatStream, transcribeAudio } from './services/api';
+import { fetchModels, chatStream, transcribeAudio, transcribeYoutube } from './services/api';
 import './index.css';
 
 function App() {
@@ -11,6 +11,8 @@ function App() {
   const [error, setError] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
+  const [showTools, setShowTools] = useState(false);
+  const [youtubeUrl, setYoutubeUrl] = useState('');
   
   const messagesEndRef = useRef(null);
   const mediaRecorderRef = useRef(null);
@@ -77,6 +79,51 @@ function App() {
       mediaRecorderRef.current.stop();
       mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
       setIsRecording(false);
+    }
+  };
+
+  const handleYoutubeTranscribe = async (e) => {
+    e.preventDefault();
+    if (!youtubeUrl.trim() || isLoading) return;
+
+    setShowTools(false);
+    setIsTranscribing(true);
+    setError(null);
+    
+    try {
+        const transcribedText = await transcribeYoutube(youtubeUrl);
+        const summaryPrompt = `Resuma o seguinte vídeo transcrito:\n\n${transcribedText}`;
+        
+        const userMsg = { role: 'user', content: summaryPrompt };
+        const newHistory = [...messages, userMsg];
+        
+        setMessages(newHistory);
+        setYoutubeUrl('');
+        setIsLoading(true);
+
+        let aiResponse = "";
+        setMessages([...newHistory, { role: 'assistant', content: '' }]);
+
+        await chatStream(
+          selectedModel,
+          newHistory,
+          (chunk) => {
+            aiResponse += chunk;
+            setMessages([...newHistory, { role: 'assistant', content: aiResponse }]);
+          },
+          (err) => {
+            setError(err);
+            setIsLoading(false);
+            setIsTranscribing(false);
+          },
+          () => {
+            setIsLoading(false);
+            setIsTranscribing(false);
+          }
+        );
+    } catch (err) {
+        setError("Failed to transcribe YouTube video.");
+        setIsTranscribing(false);
     }
   };
 
@@ -157,28 +204,56 @@ function App() {
         </div>
       </main>
 
-      <footer className="input-area">
-        <form onSubmit={handleSend}>
-          <button 
-            type="button" 
-            className={`mic-button ${isRecording ? 'recording' : ''}`}
-            onClick={isRecording ? stopRecording : startRecording}
-            disabled={isTranscribing || isLoading}
-            title="Gravar Áudio"
-          >
-            {isTranscribing ? '⏳' : '🎤'}
-          </button>
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message..."
-            disabled={isLoading || !selectedModel || isTranscribing}
-          />
-          <button type="submit" disabled={isLoading || !selectedModel || !input.trim()}>
-            {isLoading ? '...' : 'Send'}
-          </button>
-        </form>
+      <footer className="input-footer">
+        {showTools && (
+            <div className="tools-bar">
+                <form onSubmit={handleYoutubeTranscribe} className="youtube-form">
+                    <input 
+                        type="url" 
+                        placeholder="Cole um link do YouTube aqui..." 
+                        value={youtubeUrl}
+                        onChange={(e) => setYoutubeUrl(e.target.value)}
+                        disabled={isTranscribing || isLoading}
+                        required
+                    />
+                    <button type="submit" disabled={isTranscribing || isLoading}>
+                        Extrair e Resumir
+                    </button>
+                </form>
+            </div>
+        )}
+        <div className="input-area">
+          <form onSubmit={handleSend}>
+            <button
+              type="button"
+              className="plus-button"
+              onClick={() => setShowTools(!showTools)}
+              disabled={isTranscribing || isLoading}
+              title="Mais ferramentas"
+            >
+              +
+            </button>
+            <button 
+              type="button" 
+              className={`mic-button ${isRecording ? 'recording' : ''}`}
+              onClick={isRecording ? stopRecording : startRecording}
+              disabled={isTranscribing || isLoading}
+              title="Gravar Áudio"
+            >
+              {isTranscribing ? '⏳' : '🎤'}
+            </button>
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type your message..."
+              disabled={isLoading || !selectedModel || isTranscribing}
+            />
+            <button type="submit" disabled={isLoading || !selectedModel || !input.trim()}>
+              {isLoading ? '...' : 'Send'}
+            </button>
+          </form>
+        </div>
       </footer>
     </div>
   );
