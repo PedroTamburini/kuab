@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Marubo Portuguese Lexical SFT v2 Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "messages", "metadata"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^example_[a-f0-9]{20}$"
+    },
+    "messages": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "prefixItems": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "content"],
+          "properties": {
+            "role": {"const": "user"},
+            "content": {"type": "string", "minLength": 1}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["role", "content"],
+          "properties": {
+            "role": {"const": "assistant"},
+            "content": {"type": "string", "minLength": 1}
+          }
+        }
+      ],
+      "items": false
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task",
+        "direction",
+        "component_id",
+        "query",
+        "accepted_equivalents",
+        "source_record_ids",
+        "data_quality",
+        "requires_speaker_validation",
+        "permission_status",
+        "permission_reference",
+        "contains_authored_marubo_sentence"
+      ],
+      "properties": {
+        "task": {
+          "enum": ["marubo_to_pt_lexical", "pt_to_marubo_lexical"]
+        },
+        "direction": {
+          "enum": ["mzr_to_pt-BR", "pt-BR_to_mzr"]
+        },
+        "component_id": {
+          "type": "string",
+          "pattern": "^component_[a-f0-9]{16}$"
+        },
+        "query": {"type": "string", "minLength": 1},
+        "accepted_equivalents": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "source_record_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "data_quality": {"const": "silver_source_extracted_unreviewed"},
+        "requires_speaker_validation": {"const": true},
+        "permission_status": {"const": "confirmed_for_this_project"},
+        "permission_reference": {"const": "../PERMISSION.md"},
+        "contains_authored_marubo_sentence": {"const": false}
+      }
+    }
+  }
+}

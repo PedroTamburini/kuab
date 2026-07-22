@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Marubo Portuguese Lexicon Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "lemma_marubo",
+    "language",
+    "portuguese",
+    "glosses",
+    "part_of_speech",
+    "sense_number",
+    "homonym_number",
+    "variants",
+    "pronunciations",
+    "semantic_domains",
+    "morphology",
+    "examples",
+    "quality",
+    "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lemma_marubo": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "type": "object",
+      "required": [
+        "source",
+        "target"
+      ],
+      "properties": {
+        "source": {
+          "const": "mzr"
+        },
+        "target": {
+          "const": "pt-BR"
+        }
+      },
+      "additionalProperties": false
+    },
+    "portuguese": {
+      "type": "string",
+      "minLength": 1
+    },
+    "glosses": {
+      "type": "object",
+      "required": [
+        "portuguese",
+        "english"
+      ],
+      "properties": {
+        "portuguese": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "english": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "part_of_speech": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sense_number": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "homonym_number": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pronunciations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "semantic_domains": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "morphology": {
+      "type": "object"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "quality": {
+      "type": "object"
+    },
+    "source": {
+      "type": "object"
+    }
+  }
+}

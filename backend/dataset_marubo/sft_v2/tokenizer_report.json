@@ -1,0 +1,9 @@
+{
+  "package": "marubo_sft_v2",
+  "status": "not_run",
+  "reason": "O modelo e o tokenizer exatos ainda não foram selecionados ou integrados.",
+  "required_before_training": true,
+  "input_lexicon": "../lexicon/training_eligible.jsonl",
+  "recommended_check": "Medir tokens por lema, fragmentação máxima e preservação dos diacríticos com o tokenizer exato escolhido.",
+  "note": "A auditoria não deve ser inferida a partir apenas da família Gemma; use o identificador e a revisão exatos do modelo."
+}

@@ -1,0 +1,86 @@
+{
+  "dataset": "marubo-portuguese-lexical",
+  "files": {
+    "PERMISSION.md": {
+      "bytes": 987,
+      "sha256": "43b79d2ce25921a75325b82ffbf73b6e9b26bf2643a2c3500871d99a4e67eca3"
+    },
+    "README.md": {
+      "bytes": 2388,
+      "sha256": "beba5ee90cc6f49f30306ef2e6e6a5ee751a810de7fa822433dca5aa4d228de4"
+    },
+    "lexicon/grammatical_entries.jsonl": {
+      "bytes": 136616,
+      "sha256": "bd075602a15cfe21ffb04f015df9f61968c9d93c1f7bcba4230f87a4f5b2db03"
+    },
+    "lexicon/lexicon.jsonl": {
+      "bytes": 2705488,
+      "sha256": "86aceae40d4c3211ce85f053cda383f5062c21569abdb45226e3bb0d466c4c42"
+    },
+    "lexicon/low_confidence.jsonl": {
+      "bytes": 792709,
+      "sha256": "1e568f492a9e70262e1f1deba7d9f7dd038afeac6771488f7a2697803a34cfbd"
+    },
+    "lexicon/prepared_lexicon.jsonl": {
+      "bytes": 3507859,
+      "sha256": "effdb8570ed2b3b0abac45abeed378ddd57486c135edfa48d156862596f3fbab"
+    },
+    "lexicon/quarantine.jsonl": {
+      "bytes": 14580,
+      "sha256": "ce19d49b430f64129d8056d0a3ec5c081077c6d5ae0e5508cc7e90b5d4c3599c"
+    },
+    "lexicon/training_eligible.jsonl": {
+      "bytes": 2563954,
+      "sha256": "037105d6aaeb1e81c9b2395d860dd234bf716a74e658d08c15fbaa934fc7b8b5"
+    },
+    "raw/dicionario_portugues_marubo.xlsx": {
+      "bytes": 391225,
+      "sha256": "8bf89ef7dd16b5c80638a27f27ae00ba1fa4820eaba5592619263628bcfb1f8e"
+    },
+    "scripts/evaluate_predictions.py": {
+      "bytes": 2216,
+      "sha256": "be88f3e229a04ac8f21d4b28a888e7a08b961abf83152a7f3ec456bea4a8ef8c"
+    },
+    "scripts/prepare_dataset.py": {
+      "bytes": 14490,
+      "sha256": "fba9f47a9eaf332260e915a1514d0e474285f2c121be9787a93fd80a8cd95d50"
+    },
+    "scripts/validate_dataset.py": {
+      "bytes": 8459,
+      "sha256": "48f353b99e8cfe6c349943e7041ccd00ef82703d1a5398c93ff82eae08b6c023"
+    },
+    "sft_v2/dataset_card.md": {
+      "bytes": 2340,
+      "sha256": "ba986e87381bee11478495ca8633d48460976849076362b1d83536340377046f"
+    },
+    "sft_v2/sft.schema.json": {
+      "bytes": 2491,
+      "sha256": "2015e9cf1541936dfc1201b7a79ed92221d53b40ac280300cb55019d9d3c33d1"
+    },
+    "sft_v2/test.jsonl": {
+      "bytes": 211716,
+      "sha256": "90d0a791cd41b51649e396f766a8bd9ab8811fb82457b1943ae48729e48b99f5"
+    },
+    "sft_v2/tokenizer_report.json": {
+      "bytes": 511,
+      "sha256": "f6415f3753a3e2a135300d9dd6336232e6ad6523c1998c2c24aeb5af8cc798fe"
+    },
+    "sft_v2/train.jsonl": {
+      "bytes": 1689000,
+      "sha256": "ad82ad1757fcc1f00c2c565d5aed313f9a8d4bae4b0136fe6b66a3758dd2eed0"
+    },
+    "sft_v2/validation.jsonl": {
+      "bytes": 212698,
+      "sha256": "b93c280dc8918a9d4eec6721a2cf1a55ceb62c3e07462fb23b3936e5208e6bdb"
+    },
+    "sft_v2/validation_report.json": {
+      "bytes": 1374,
+      "sha256": "dd63ea8854037c28c4712940f9d27e6d1652b5a99ac162fe47d65fb7062e8434"
+    }
+  },
+  "package": "marubo_sft_v2",
+  "permission_reference": "PERMISSION.md",
+  "permission_status": "confirmed_for_this_project",
+  "preparation_version": "2.0.0",
+  "prepared_on": "2026-07-22"
+}

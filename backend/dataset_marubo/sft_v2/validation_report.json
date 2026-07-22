@@ -1,0 +1,57 @@
+{
+  "package": "marubo_sft_v2",
+  "permission_reference": "../PERMISSION.md",
+  "permission_status": "confirmed_for_this_project",
+  "preparation_version": "2.0.0",
+  "prepared_on": "2026-07-22",
+  "purpose": "MVP lexical; does not represent sentence-level fluency",
+  "quality_tiers": {
+    "grammatical": 86,
+    "low_confidence": 489,
+    "quarantine": 9,
+    "silver": 1627
+  },
+  "source_lexicon_records": 2211,
+  "split_component_counts": {
+    "test": 128,
+    "train": 1021,
+    "validation": 123
+  },
+  "split_examples": {
+    "test": 290,
+    "train": 2316,
+    "validation": 290
+  },
+  "split_percentages": {
+    "test": 10.01,
+    "train": 79.97,
+    "validation": 10.01
+  },
+  "split_task_counts": {
+    "test": {
+      "marubo_to_pt_lexical": 150,
+      "pt_to_marubo_lexical": 140
+    },
+    "train": {
+      "marubo_to_pt_lexical": 1198,
+      "pt_to_marubo_lexical": 1118
+    },
+    "validation": {
+      "marubo_to_pt_lexical": 154,
+      "pt_to_marubo_lexical": 136
+    }
+  },
+  "total_sft_examples": 2896,
+  "training_eligible_records": 1627,
+  "validations": {
+    "all_records_have_project_permission": true,
+    "all_records_require_speaker_validation": true,
+    "authored_marubo_sentences": 0,
+    "component_overlaps": {
+      "train_test": 0,
+      "train_validation": 0,
+      "validation_test": 0
+    },
+    "conflicting_prompt_groups": 0
+  }
+}

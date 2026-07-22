@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-07-22T19:46:29.602Z",
+  "input_spreadsheet": "dicionario_portugues_marubo.xlsx",
+  "input_relation_rows": 2435,
+  "source_main_entries_fetched": 3658,
+  "lexicon_records_before_id_deduplication": 2435,
+  "lexicon_records": 2211,
+  "duplicate_ids_removed": 224,
+  "unique_ids": 2211,
+  "unique_marubo_lemmas": 1936,
+  "unique_portuguese_forms": 1868,
+  "exact_sense_matches": 1722,
+  "reversal_only_matches": 489,
+  "records_with_part_of_speech": 804,
+  "records_with_semantic_domains": 450,
+  "records_with_examples": 12,
+  "bound_morpheme_records": 119,
+  "recovered_numeric_headwords": 224,
+  "rejected_records": 0,
+  "invalid_nfc_records": 0,
+  "validation": {
+    "ids_unique": true,
+    "required_text_nonempty": true,
+    "unicode_nfc": true,
+    "no_numeric_only_marubo_lemmas": true,
+    "jsonl_one_object_per_line": true
+  }
+}
