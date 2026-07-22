@@ -58,3 +58,25 @@ export const chatStream = async (model, messages, onChunk, onError, onComplete) 
         onError("Failed to connect to chat API.");
     }
 };
+
+export const transcribeAudio = async (audioBlob) => {
+    try {
+        const formData = new FormData();
+        formData.append('audio', audioBlob, 'recording.webm');
+
+        const response = await fetch(`${API_BASE_URL}/transcribe`, {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error('Transcription failed');
+        }
+
+        const data = await response.json();
+        return data.text;
+    } catch (error) {
+        console.error("Transcription error:", error);
+        throw error;
+    }
+};
