@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { fetchModels, chatStream, transcribeAudio, transcribeYoutube } from './services/api';
 import './index.css';
+import KuabLogo from './assets/logo-kuab.svg';
+import { SendHorizontal, Square, Mic, Hourglass, Plus, Video, Send } from 'lucide-react';
 
 function App() {
   const [models, setModels] = useState([]);
@@ -162,100 +164,133 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      <header className="header">
-        <h1>Kuab</h1>
-        <div className="model-selector">
-          <label htmlFor="model">Model: </label>
-          <select 
-            id="model" 
-            value={selectedModel} 
-            onChange={(e) => setSelectedModel(e.target.value)}
-            disabled={models.length === 0}
-          >
-            {models.length === 0 ? (
-              <option value="">No models available</option>
-            ) : (
-              models.map(m => (
-                <option key={m.name} value={m.name}>{m.name}</option>
-              ))
-            )}
-          </select>
-        </div>
-      </header>
+		<div className="app-container">
+			<header className="header">
+				<img className="logo" src={KuabLogo} alt="Kuab Logo" />
+			</header>
 
-      {error && <div className="error-banner">{error}</div>}
+			{error && <div className="error-banner">{error}</div>}
 
-      <main className="chat-container">
-        <div className="messages">
-          {messages.length === 0 && (
-            <div className="empty-state">
-              <p>Welcome to Kuab! Select a model and start chatting.</p>
-            </div>
-          )}
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`message-wrapper ${msg.role}`}>
-              <div className="message-content">
-                {msg.content}
-              </div>
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-      </main>
+			<main className="chat-container">
+				<div className="messages">
+					{messages.length === 0 && (
+						<div className="empty-state">
+							<p className="text-large">
+								Kuab-no mĩ nokoa roakaki! Westíchta awe kavẽatso
+								ikĩ vana txitátso
+							</p>
+							<p className="text-small">
+								Bem-vindo ao Kuab! Selecione um modelo e comece
+								a conversar.
+							</p>
+						</div>
+					)}
+					{messages.map((msg, idx) => (
+						<div
+							key={idx}
+							className={`message-wrapper ${msg.role}`}
+						>
+							<div className="message-content">{msg.content}</div>
+						</div>
+					))}
+					<div ref={messagesEndRef} />
+				</div>
+			</main>
 
-      <footer className="input-footer">
-        {showTools && (
-            <div className="tools-bar">
-                <form onSubmit={handleYoutubeTranscribe} className="youtube-form">
-                    <input 
-                        type="url" 
-                        placeholder="Cole um link do YouTube aqui..." 
-                        value={youtubeUrl}
-                        onChange={(e) => setYoutubeUrl(e.target.value)}
-                        disabled={isTranscribing || isLoading}
-                        required
-                    />
-                    <button type="submit" disabled={isTranscribing || isLoading}>
-                        Extrair e Resumir
-                    </button>
-                </form>
-            </div>
-        )}
-        <div className="input-area">
-          <form onSubmit={handleSend}>
-            <button
-              type="button"
-              className="plus-button"
-              onClick={() => setShowTools(!showTools)}
-              disabled={isTranscribing || isLoading}
-              title="Mais ferramentas"
-            >
-              +
-            </button>
-            <button 
-              type="button" 
-              className={`mic-button ${isRecording ? 'recording' : ''}`}
-              onClick={isRecording ? stopRecording : startRecording}
-              disabled={isTranscribing || isLoading}
-              title="Gravar Áudio"
-            >
-              {isTranscribing ? '⏳' : '🎤'}
-            </button>
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
-              disabled={isLoading || !selectedModel || isTranscribing}
-            />
-            <button type="submit" disabled={isLoading || !selectedModel || !input.trim()}>
-              {isLoading ? '...' : 'Send'}
-            </button>
-          </form>
-        </div>
-      </footer>
-    </div>
+			{showTools && (
+				<div className="youtube-section">
+					<form
+						onSubmit={handleYoutubeTranscribe}
+						className="youtube-form"
+					>
+						<input
+							type="url"
+							placeholder="Cole um link do YouTube aqui..."
+							value={youtubeUrl}
+							onChange={(e) => setYoutubeUrl(e.target.value)}
+							disabled={isTranscribing || isLoading}
+							required
+						/>
+						<button
+							type="submit"
+							disabled={isTranscribing || isLoading}
+						>
+							<SendHorizontal />
+						</button>
+					</form>
+				</div>
+			)}
+			<footer className="input-footer">
+				<div className="input-area">
+					<div className="model-selector">
+						<select
+							id="model"
+							value={selectedModel}
+							onChange={(e) => setSelectedModel(e.target.value)}
+							disabled={models.length === 0}
+						>
+							{models.length === 0 ? (
+								<option value="">Selecione um modelo</option>
+							) : (
+								models.map((m) => (
+									<option key={m.name} value={m.name}>
+										{m.name}
+									</option>
+								))
+							)}
+						</select>
+					</div>
+					<form onSubmit={handleSend}>
+						<button
+							type="button"
+							className="plus-button"
+							onClick={() => setShowTools(!showTools)}
+							disabled={isTranscribing || isLoading}
+							title="Link do YouTube"
+						>
+							<div>
+								<Video />
+							</div>
+						</button>
+						<button
+							type="button"
+							className={`mic-button ${isRecording ? "recording" : ""}`}
+							onClick={
+								isRecording ? stopRecording : startRecording
+							}
+							disabled={isTranscribing || isLoading}
+							title="Gravar Áudio"
+						>
+							{isTranscribing ? (
+								<div>
+									<Hourglass />
+								</div>
+							) : (
+								<div>
+									<Mic />
+								</div>
+							)}
+						</button>
+						<button
+							type="submit"
+							disabled={
+								isLoading || !selectedModel || !input.trim()
+							}
+						>
+							{isLoading ? (
+								<div>
+									<Square />
+								</div>
+							) : (
+								<div>
+									<SendHorizontal />
+								</div>
+							)}
+						</button>
+					</form>
+				</div>
+			</footer>
+		</div>
   );
 }
 
