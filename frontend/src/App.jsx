@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { fetchModels, chatStream, transcribeAudio, transcribeYoutube } from './services/api';
 import './index.css';
 import KuabLogo from './assets/logo-kuab.svg';
@@ -94,9 +95,14 @@ function App() {
     
     try {
         const transcribedText = await transcribeYoutube(youtubeUrl);
-        const summaryPrompt = `Resuma o seguinte vídeo transcrito:\n\n${transcribedText}`;
+        const summaryPrompt = `Por favor, explique e resuma a transcrição de vídeo a seguir.\n\nTranscrição Original:\n${transcribedText}`;
         
-        const userMsg = { role: 'user', content: summaryPrompt };
+        const userMsg = { 
+            role: 'user', 
+            content: summaryPrompt,
+            isAttachment: true,
+            attachmentName: "transcricao_video.txt"
+        };
         const newHistory = [...messages, userMsg];
         
         setMessages(newHistory);
@@ -196,6 +202,34 @@ function App() {
 					<div ref={messagesEndRef} />
 				</div>
 			</main>
+      <main className="chat-container">
+        <div className="messages">
+          {messages.length === 0 && (
+            <div className="empty-state">
+              <p>Welcome to Kuab! Select a model and start chatting.</p>
+            </div>
+          )}
+          {messages.map((msg, idx) => (
+            <div key={idx} className={`message-wrapper ${msg.role}`}>
+              <div className="message-content">
+                {msg.isAttachment ? (
+                  <div className="attachment-ui">
+                    <span className="attachment-icon">📎</span>
+                    <span className="attachment-name">{msg.attachmentName}</span>
+                  </div>
+                ) : (
+                  msg.role === 'assistant' ? (
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  ) : (
+                    msg.content
+                  )
+                )}
+              </div>
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+      </main>
 
 			{showTools && (
 				<div className="youtube-section">
